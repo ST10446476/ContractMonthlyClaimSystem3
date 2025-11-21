@@ -1,19 +1,11 @@
 ﻿using ContractMonthlyClaimSystem.Data;
 using ContractMonthlyClaimSystem.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ContractMonthlyClaimSystem.Views
 {
@@ -29,21 +21,18 @@ namespace ContractMonthlyClaimSystem.Views
             InitializeComponent();
             _context = new ClaimDbContext();
 
-            // Set focus to username textbox
+            // Set focus to username textbox on load
             Loaded += (s, e) => UsernameTextBox.Focus();
 
-            // Allow Enter key to login
-            UsernameTextBox.KeyDown += (s, e) =>
-            {
-                if (e.Key == System.Windows.Input.Key.Enter)
-                    PasswordBox.Focus();
-            };
+            // Enter key handling
+            UsernameTextBox.KeyDown += TextBox_KeyDown;
+            PasswordBox.KeyDown += TextBox_KeyDown;
+        }
 
-            PasswordBox.KeyDown += (s, e) =>
-            {
-                if (e.Key == System.Windows.Input.Key.Enter)
-                    LoginButton_Click(s, e);
-            };
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                LoginButton_Click(sender, e);
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -64,11 +53,11 @@ namespace ContractMonthlyClaimSystem.Views
                 // Hash the password
                 string passwordHash = HashPassword(password);
 
-                // Find user
+                // Look for user in DB
                 var user = _context.Users
                     .FirstOrDefault(u => u.Username == username &&
-                                       u.PasswordHash == passwordHash &&
-                                       u.IsActive);
+                                         u.PasswordHash == passwordHash &&
+                                         u.IsActive);
 
                 if (user == null)
                 {
@@ -81,52 +70,61 @@ namespace ContractMonthlyClaimSystem.Views
                 user.LastLoginDate = DateTime.Now;
                 _context.SaveChanges();
 
-                // Store user info in application properties
+                // Store user session info
                 Application.Current.Properties["CurrentUserId"] = user.UserId;
-                Application.Current.Properties["CurrentUserRole"] = user.Role;
                 Application.Current.Properties["CurrentUsername"] = user.Username;
+                Application.Current.Properties["CurrentUserRole"] = user.Role;
 
-                // Open appropriate window based on role
-                Window mainWindow = null;
-
-                switch (user.Role)
+                // Open the correct window based on role
+                Window mainWindow = user.Role switch
                 {
-                    case "Lecturer":
-                        if (user.LecturerId.HasValue)
-                        {
-                            mainWindow = new LecturerView();
-                            ((LecturerView)mainWindow).DataContext =
-                                new LecturerViewModel(user.LecturerId.Value);
-                        }
-                        break;
-
-                    case "Coordinator":
-                        mainWindow = new CoordinatorView();
-                        ((CoordinatorView)mainWindow).DataContext =
-                            new CoordinatorViewModel();
-                        break;
-
-                    case "HR":
-                        mainWindow = new HRView();
-                        ((HRView)mainWindow).DataContext =
-                            new HRViewModel();
-                        break;
-
-                    default:
-                        ErrorMessage.Text = "Unknown user role.";
-                        return;
-                }
+                    "Lecturer" when user.LecturerId.HasValue => OpenLecturerWindow(user.LecturerId.Value),
+                    "Coordinator" => OpenCoordinatorWindow(),
+                    "HR" => OpenHRWindow(),
+                    _ => null
+                };
 
                 if (mainWindow != null)
                 {
                     mainWindow.Show();
                     this.Close();
                 }
+                else
+                {
+                    ErrorMessage.Text = "User role not recognized or missing data.";
+                }
             }
             catch (Exception ex)
             {
                 ErrorMessage.Text = $"Login error: {ex.Message}";
             }
+        }
+
+        private LecturerView OpenLecturerWindow(int lecturerId)
+        {
+            var window = new LecturerView
+            {
+                DataContext = new LecturerViewModel(lecturerId)
+            };
+            return window;
+        }
+
+        private CoordinatorView OpenCoordinatorWindow()
+        {
+            var window = new CoordinatorView
+            {
+                DataContext = new CoordinatorViewModel()
+            };
+            return window;
+        }
+
+        private HRView OpenHRWindow()
+        {
+            var window = new HRView
+            {
+                DataContext = new HRViewModel()
+            };
+            return window;
         }
 
         private string HashPassword(string password)
@@ -142,23 +140,6 @@ namespace ContractMonthlyClaimSystem.Views
         {
             _context?.Dispose();
             base.OnClosed(e);
-        }
-
-        private class HRViewModel
-        {
-            public HRViewModel()
-            {
-            }
-        }
-
-        private class LecturerViewModel
-        {
-            private object value;
-
-            public LecturerViewModel(object value)
-            {
-                this.value = value;
-            }
         }
     }
 }
