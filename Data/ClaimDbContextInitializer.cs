@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace ContractMonthlyClaimSystem.Data
 {
-    public class ClaimDbContextInitialzer : DropCreateDatabaseIfModelChanges<ClaimDbContext>
+        public class ClaimDbContextInitializer : DropCreateDatabaseIfModelChanges<ClaimDbContext>
     {
         public override void InitializeDatabase(ClaimDbContext context)
         {
