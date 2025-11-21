@@ -44,7 +44,7 @@ namespace ContractMonthlyClaimSystem.Models
         public virtual ICollection<Claim> Claims { get; set; }
 
         [NotMapped]
-        public string FullName => $"{FirstName} {LastName}"
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
 
