@@ -1,4 +1,5 @@
 ﻿using ContractMonthlyClaimSystem.Data;
+using ContractMonthlyClaimSystem.Views;       // For LecturerView, CoordinatorView, HRView
 using ContractMonthlyClaimSystem.ViewModels;
 using System;
 using System.Linq;
