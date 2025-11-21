@@ -7,22 +7,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows;
+using ContractMonthlyClaimSystem.Views;
 
 namespace ContractMonthlyClaimSystem
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class App : Application
     {
-        public MainWindow()
-
+        protected override void OnStartup(StartupEventArgs e)
         {
-            InitializeComponent();
+            base.OnStartup(e);
+
+            // Initialize EF or other services here if needed
+
+            // Show the CoordinatorView window
+            CoordinatorView coordinatorView = new CoordinatorView();
+            coordinatorView.Show();
         }
     }
 }
 
-    
+
+
