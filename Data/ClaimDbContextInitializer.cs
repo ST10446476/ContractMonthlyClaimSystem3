@@ -1,6 +1,6 @@
 ﻿namespace ContractMonthlyClaimSystem.Data
 {
-    public class ClaimDbContextInitializer
+    public class DbContext
     {
     }
 }
