@@ -1,0 +1,152 @@
+﻿<Window x:Class="ContractMonthlyClaimSystem.Views.LecturerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lecturer Portal - Submit Claim" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2196F3" Padding="20" CornerRadius="5" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="Lecturer Portal" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                <TextBlock Text="{Binding CurrentLecturer.FullName, StringFormat='Welcome, {0}'}" 
+                          FontSize="16" Foreground="White" Margin="0,5,0,0"/>
+                <TextBlock Text="{Binding CurrentLecturer.Department, StringFormat='Department: {0}'}" 
+                          FontSize="14" Foreground="White"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Claim Submission Form -->
+        <Border Grid.Row="1" BorderBrush="#E0E0E0" BorderThickness="1" 
+                CornerRadius="5" Padding="20" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="Submit New Claim" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left Column -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Hours Worked:" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Text="{Binding HoursWorked, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="(0 - 200 hours)" FontSize="11" Foreground="Gray" Margin="0,2,0,0"/>
+
+                        <TextBlock Text="Hourly Rate (R):" Style="{StaticResource LabelStyle}" Margin="0,20,0,5"/>
+                        <TextBox Text="{Binding HourlyRate, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                        <TextBlock Text="(R20 - R500 per hour)" FontSize="11" Foreground="Gray" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <!-- Right Column -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Final Payment:" Style="{StaticResource LabelStyle}"/>
+                        <Border Background="#E8F5E9" Padding="15" CornerRadius="5">
+                            <TextBlock Text="{Binding FinalPayment, StringFormat='R {0:N2}'}" 
+                                      FontSize="32" FontWeight="Bold" 
+                                      Foreground="#4CAF50" HorizontalAlignment="Center"/>
+                        </Border>
+
+                        <TextBlock Text="Notes (Optional):" Style="{StaticResource LabelStyle}" Margin="0,20,0,5"/>
+                        <TextBox Text="{Binding Notes}" Height="80" TextWrapping="Wrap" 
+                                AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button Content="Clear Form" Command="{Binding ClearFormCommand}" 
+                           Background="#9E9E9E" Foreground="White"/>
+                    <Button Content="Submit Claim" Command="{Binding SubmitClaimCommand}" 
+                           Background="#4CAF50" Foreground="White"/>
+                </StackPanel>
+
+                <!-- Status Message -->
+                <TextBlock Text="{Binding StatusMessage}" FontSize="14" 
+                          Foreground="#4CAF50" Margin="0,10,0,0" 
+                          HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Claim History -->
+        <Border Grid.Row="2" BorderBrush="#E0E0E0" BorderThickness="1" 
+                CornerRadius="5" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Claim History" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                <DataGrid Grid.Row="1" ItemsSource="{Binding ClaimHistory}" 
+                         AutoGenerateColumns="False" IsReadOnly="True"
+                         AlternatingRowBackground="#F5F5F5" 
+                         GridLinesVisibility="Horizontal"
+                         HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Claim ID" Binding="{Binding ClaimId}" Width="80"/>
+                        <DataGridTextColumn Header="Submission Date" 
+                                          Binding="{Binding SubmissionDate, StringFormat=dd/MM/yyyy}" Width="120"/>
+                        <DataGridTextColumn Header="Hours" Binding="{Binding HoursWorked}" Width="80"/>
+                        <DataGridTextColumn Header="Rate" 
+                                          Binding="{Binding HourlyRate, StringFormat='R {0:N2}'}" Width="100"/>
+                        <DataGridTextColumn Header="Amount" 
+                                          Binding="{Binding FinalPayment, StringFormat='R {0:N2}'}" Width="120"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="Approved">
+                                            <Setter Property="Foreground" Value="#4CAF50"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                        <Trigger Property="Text" Value="Rejected">
+                                            <Setter Property="Foreground" Value="#F44336"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                        <Trigger Property="Text" Value="Pending">
+                                            <Setter Property="Foreground" Value="#FF9800"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
+   
