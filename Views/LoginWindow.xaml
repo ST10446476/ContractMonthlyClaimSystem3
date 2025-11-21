@@ -8,43 +8,44 @@
         Background="#F5F5F5">
 
     <Grid>
-        <!-- Main Content -->
-        <Border Background="White" Margin="30" CornerRadius="10" 
-                Effect="{StaticResource DropShadowEffect}">
+
+        <Border Background="White" Margin="30" CornerRadius="10">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.2"/>
             </Border.Effect>
 
             <StackPanel Margin="40">
+
                 <!-- Logo/Header -->
                 <Border Background="#2196F3" Padding="20" CornerRadius="5" Margin="0,0,0,30">
                     <StackPanel>
                         <TextBlock Text="🎓" FontSize="48" HorizontalAlignment="Center"/>
                         <TextBlock Text="Claim System" FontSize="24" FontWeight="Bold" 
-                                  Foreground="White" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                                   Foreground="White" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                         <TextBlock Text="Contract Monthly Claims" FontSize="14" 
-                                  Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                   Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                     </StackPanel>
                 </Border>
 
                 <!-- Username -->
                 <TextBlock Text="Username" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
                 <TextBox x:Name="UsernameTextBox" FontSize="14" Padding="10" Height="40" 
-                        BorderBrush="#E0E0E0" BorderThickness="2"/>
+                         BorderBrush="#E0E0E0" BorderThickness="2"/>
 
                 <!-- Password -->
                 <TextBlock Text="Password" FontSize="14" FontWeight="SemiBold" Margin="0,15,0,5"/>
-                <PasswordBox x:Name="PasswordBox" FontSize="14" Padding="10" Height="40" 
-                            BorderBrush="#E0E0E0" BorderThickness="2"/>
+                <Border Padding="0" BorderBrush="#E0E0E0" BorderThickness="2">
+                    <PasswordBox x:Name="PasswordBox" FontSize="14" Height="40"/>
+                </Border>
 
                 <!-- Error Message -->
                 <TextBlock x:Name="ErrorMessage" Text="" Foreground="#F44336" FontSize="12" 
-                          Margin="0,10,0,0" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                           Margin="0,10,0,0" TextWrapping="Wrap" HorizontalAlignment="Center"/>
 
                 <!-- Login Button -->
                 <Button x:Name="LoginButton" Content="Login" FontSize="16" FontWeight="Bold" 
-                       Height="45" Margin="0,20,0,0" Background="#4CAF50" Foreground="White" 
-                       BorderThickness="0" Cursor="Hand" Click="LoginButton_Click">
+                        Height="45" Margin="0,20,0,0" Background="#4CAF50" Foreground="White" 
+                        BorderThickness="0" Cursor="Hand" Click="LoginButton_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#4CAF50"/>
@@ -52,9 +53,9 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}" 
-                                               CornerRadius="5" Padding="10">
+                                                CornerRadius="5" Padding="10">
                                             <ContentPresenter HorizontalAlignment="Center" 
-                                                            VerticalAlignment="Center"/>
+                                                              VerticalAlignment="Center"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -72,7 +73,7 @@
                 <Border Background="#FFF3E0" Padding="15" CornerRadius="5" Margin="0,30,0,0">
                     <StackPanel>
                         <TextBlock Text="Demo Credentials:" FontSize="12" FontWeight="Bold" 
-                                  Foreground="#FF6F00" Margin="0,0,0,10"/>
+                                   Foreground="#FF6F00" Margin="0,0,0,10"/>
 
                         <TextBlock FontSize="11" Foreground="#333">
                             <Run Text="Lecturer:" FontWeight="Bold"/>
@@ -97,7 +98,9 @@
                         </TextBlock>
                     </StackPanel>
                 </Border>
+
             </StackPanel>
         </Border>
+
     </Grid>
 </Window>
