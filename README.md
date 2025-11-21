@@ -309,17 +309,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For support and questions:
 - **Email:** support@institution.edu
-- **Documentation:** [Wiki](https://github.com/yourusername/ContractMonthlyClaimSystem/wiki)
-- **Issues:** [GitHub Issues](https://github.com/yourusername/ContractMonthlyClaimSystem/issues)
+- **Documentation:** [Wiki](https://github.com/st10446476/ContractMonthlyClaimSystem/wiki)
+- **Issues:** [GitHub Issues](https://github.com/st10446476/ContractMonthlyClaimSystem/issues)
 
 ## 🙏 Acknowledgments
 
 - Icons from Material Design Icons
 - UI inspiration from modern WPF applications
 - Entity Framework team for excellent ORM support
-
----
-
-**Version:** 1.0.0  
-**Last Updated:** November 2025  
-**Maintained By:** Development Team
