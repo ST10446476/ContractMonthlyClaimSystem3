@@ -5,24 +5,9 @@ namespace ContractMonthlyClaimSystem.Data
 {
     public class ClaimDbContextInitialzer : DropCreateDatabaseIfModelChanges<ClaimDbContext>
     {
-        public override bool Equals(object? obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
         public override void InitializeDatabase(ClaimDbContext context)
         {
             base.InitializeDatabase(context);
-        }
-
-        public override string? ToString()
-        {
-            return base.ToString();
         }
 
         protected override void Seed(ClaimDbContext context)
