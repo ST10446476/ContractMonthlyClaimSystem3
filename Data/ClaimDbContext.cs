@@ -5,7 +5,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace ContractMonthlyClaimSystem.Data
 {
-    public class ClaimDbContext : ClaimDbContextInitializer
+    public class ClaimDbContext : DbContext
     {
         // Constructor uses connection string name from App.config / Web.config
         public ClaimDbContext()
@@ -19,6 +19,7 @@ namespace ContractMonthlyClaimSystem.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
+
         {
             // Remove EF6 pluralizing conventions
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
@@ -104,6 +105,11 @@ namespace ContractMonthlyClaimSystem.Data
                 .WithMany()
                 .HasForeignKey(a => a.UserId)
                 .WillCascadeOnDelete(false);
+        }
+
+        internal void SaveChanges()
+        {
+            throw new NotImplementedException();
         }
     }
 }

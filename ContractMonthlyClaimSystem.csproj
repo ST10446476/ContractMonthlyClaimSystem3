@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\DbContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Data\DbContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.5.1" />
   </ItemGroup>
 

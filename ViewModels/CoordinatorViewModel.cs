@@ -1,49 +1,56 @@
-﻿using ContractMonthlyClaimSystem.Views;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ContractMonthlyClaimSystem.ViewModels { 
- public partial class CoordinatorView : Window
+namespace ContractMonthlyClaimSystem.Views
 {
-    public CoordinatorView()
+    public partial class CoordinatorView : Window
     {
-        InitializeComponent();
-    }
+        private List<Claim> allClaims;
 
-        private void InitializeComponent()
+        public CoordinatorView()
         {
-            throw new NotImplementedException();
+            InitializeComponent(); // WPF InitializeComponent
+            LoadClaims();
+            DisplayClaims(allClaims);
+        }
+
+        private void LoadClaims()
+        {
+            // Sample data
+            allClaims = new List<Claim>
+            {
+                new Claim { ClaimId = 1, Lecturer = "John Doe", Status = "Pending" },
+                new Claim { ClaimId = 2, Lecturer = "Jane Smith", Status = "Approved" },
+                new Claim { ClaimId = 3, Lecturer = "Alice Brown", Status = "Rejected" },
+                new Claim { ClaimId = 4, Lecturer = "Bob White", Status = "Pending" }
+            };
+        }
+
+        private void DisplayClaims(IEnumerable<Claim> claims)
+        {
+            ClaimsDataGrid.ItemsSource = claims;
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
-    {
-        // Handle status filter radio button changes
-        if (DataContext is ViewModels.CoordinatorViewModel viewModel)
         {
-            var radioButton = sender as RadioButton;
-            if (radioButton != null && radioButton.Tag != null)
+            var radio = sender as RadioButton;
+            if (radio != null)
             {
-                viewModel.FilterStatus = radioButton.Tag.ToString();
+                string status = radio.Tag?.ToString();
+                if (status == "All")
+                    DisplayClaims(allClaims);
+                else
+                    DisplayClaims(allClaims.Where(c => c.Status == status));
             }
         }
     }
 
-    protected override void OnClosed(System.EventArgs e)
+    public class Claim
     {
-        base.OnClosed(e);
-        // Return to login
-        var login = new LoginWindow();
-        login.Show();
-    }
-}
-
-    internal class CoordinatorViewModel
-    {
-        public string? FilterStatus { get; internal set; }
+        public int ClaimId { get; set; }
+        public string Lecturer { get; set; }
+        public string Status { get; set; }
     }
 }

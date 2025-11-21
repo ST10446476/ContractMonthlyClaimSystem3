@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Data.Entity;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,8 +18,11 @@ namespace ContractMonthlyClaimSystem
     public partial class MainWindow : Window
     {
         public MainWindow()
+
         {
             InitializeComponent();
         }
     }
 }
+
+    
